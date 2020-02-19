@@ -13,14 +13,14 @@
 // limitations under the License.
 
 // Original source:
-// "The MNIST database of handwritten digits"
-// Yann LeCun, Corinna Cortes, and Christopher J.C. Burges
-// http://yann.lecun.com/exdb/mnist/
+// "Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithms"
+// Han Xiao and Kashif Rasul and Roland Vollgraf
+// https://arxiv.org/abs/1708.07747
 
 import Foundation
 import TensorFlow
 
-public struct MNIST: ImageClassificationDataset {
+public struct FashionMNIST: ImageClassificationDataset {
     public let trainingDataset: Dataset<LabeledExample>
     public let testDataset: Dataset<LabeledExample>
     public let trainingExampleCount = 60000
@@ -33,7 +33,7 @@ public struct MNIST: ImageClassificationDataset {
     public init(
         flattening: Bool = false, normalizing: Bool = false,
         localStorageDirectory: URL = FileManager.default.temporaryDirectory.appendingPathComponent(
-            "MNIST", isDirectory: true)
+            "FashionMNIST", isDirectory: true)
     ) {
         self.trainingDataset = Dataset<LabeledExample>(
             elements: fetchDataset(
@@ -60,8 +60,8 @@ fileprivate func fetchDataset(
     flattening: Bool,
     normalizing: Bool
 ) -> LabeledExample {
-    guard let remoteRoot = URL(string: "https://storage.googleapis.com/cvdf-datasets/mnist") else {
-        fatalError("Failed to create MNIST root url: https://storage.googleapis.com/cvdf-datasets/mnist")
+    guard let remoteRoot = URL(string: "http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/") else {
+        fatalError("Failed to create FashionMNIST root url: http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/")
     }
 
     let imagesData = DatasetUtilities.fetchResource(
